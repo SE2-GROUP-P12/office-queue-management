@@ -1,4 +1,4 @@
-package it.polito.ezqueue.dto;
+package it.polito.ezqueue.entity;
 
 @Entity
 public class Service {

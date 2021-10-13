@@ -1,6 +1,6 @@
 package it.polito.ezqueue.service;
 
-import it.polito.ezqueue.dto.OfficeDto;
+import it.polito.ezqueue.entity.Office;
 
 @Service
 public class OfficeService

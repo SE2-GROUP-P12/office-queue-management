@@ -3,15 +3,16 @@ package it.polito.ezqueue.controller;
 @RestController
 @RequestMapping(path = "") //must wait for API
 public class ServiceController {
-    private final ServiceService serviceService;
 
     @Autowired
+    private final ServiceService serviceService;
+
     public ServiceController(ServiceService serviceService)
     {
         this.serviceService=serviceService;
     }
 
-    @GetMapping
+    @GetMapping(path="...")
     public List<Service> getAllServices(){
         return serviceService.getAllServices();
     }
