@@ -1,9 +1,21 @@
 import {Col} from 'react-bootstrap'
 import {Button, Modal} from "react-bootstrap";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "react-bootstrap";
 import { useEffect, useState} from "react";
 function Customer() {
     const [modalShow, setModalShow] = useState(false);
     const [nextNumber, setNextNumber] = useState(0);//prossimo numero da dare
+    const [serviceList, setServiceList]  = useState([{"name": "Payment", "id":1 }, {"name":"Consulting", "id":2 }, {"name": "placeholder", "id":3 }])
+    /*useEffect(()=>{
+        fetch("/API/custome_loadServices/").then(response=>{
+            setServiceList(response)
+        }) .catch(error => {
+            console.log(error);
+            updateSurveyList(()=>[]);
+            
+        })
+    
+    })*/
     const buttonHandler= ()=>{
         setNextNumber(nextNumber+1); 
         setModalShow(true)
@@ -12,7 +24,7 @@ function Customer() {
             "service": "placeholder"
         }
         /*
-        fetch('/customer/newNumber', {
+        fetch('/API/customer_newNumber', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -24,6 +36,21 @@ function Customer() {
     return (
         <Col>
             <h1>Customer</h1>
+            
+<Dropdown>
+  <Dropdown.Toggle variant="success" id="dropdown-basic">
+    Select a service
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu>
+  {serviceList.map((item)=>
+        <Dropdown.Item href={"#/action-"+ item.id}>{item.name}</Dropdown.Item>
+        )}
+  </Dropdown.Menu>
+</Dropdown>
+
+            
+            
             <Button type="button" class="vertical-center" onClick={() => {buttonHandler() }}>Get your number</Button>
             <CustomerNumberModal show={modalShow} onHide={() => setModalShow(false)}number ={nextNumber}/>
         </Col>
@@ -37,11 +64,11 @@ function Employee() {
         setModalShow(true);
     /*scheletro per la chiamata a api 
     useEffect(()=>{
-        fetch("/employee/getNext/"+counterNumber).then(response=>{
+        fetch("/API/employee_getNext/"+counterNumber).then(response=>{
             setNextNumber(response)
         }) .catch(error => {
             console.log(error);
-            updateSurveyList(()=>[]);
+            
             
         })
     
