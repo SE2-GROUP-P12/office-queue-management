@@ -1,5 +1,7 @@
 package it.polito.ezqueue.controller;
 
+import it.polito.ezqueue.entity.Service;
+
 @RestController
 @RequestMapping(path = "") //must wait for API
 public class ServiceController {

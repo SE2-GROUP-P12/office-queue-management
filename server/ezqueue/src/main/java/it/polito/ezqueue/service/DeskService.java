@@ -1,7 +1,7 @@
 package it.polito.ezqueue.service;
 
-import it.polito.ezqueue.dto.DeskDto;
-import it.polito.ezqueue.dto.ServiceDto;
+import it.polito.ezqueue.entity.Desk;
+import it.polito.ezqueue.entity.Service;
 
 @Service
 public class DeskService
