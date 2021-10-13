@@ -1,4 +1,4 @@
-package it.polito.ezqueue.objects;
+package it.polito.ezqueue.dto;
 
 import java.util.ArrayList;
 
