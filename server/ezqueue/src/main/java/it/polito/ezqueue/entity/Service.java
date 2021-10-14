@@ -1,21 +1,20 @@
 package it.polito.ezqueue.entity;
 
-@Entity
 public class Service {
-    private String serviceID;
+    private String serviceId;
     private Float serviceTime;
 
-    public Service(String serviceID, Float serviceTime) {
-        this.serviceID = serviceID;
+    public Service(String serviceId, Float serviceTime) {
+        this.serviceId = serviceId;
         this.serviceTime = serviceTime;
     }
 
-    public String getServiceID() {
-        return serviceID;
+    public String getServiceId() {
+        return serviceId;
     }
 
-    public void setServiceID(String serviceID) {
-        this.serviceID = serviceID;
+    public void setServiceId(String serviceID) {
+        this.serviceId = serviceID;
     }
 
     public Float getServiceTime() {
@@ -29,7 +28,7 @@ public class Service {
     @java.lang.Override
     public java.lang.String toString() {
         return "Service{" +
-                "serviceID='" + serviceID + '\'' +
+                "serviceId='" + serviceId + '\'' +
                 ", serviceTime=" + serviceTime +
                 '}';
     }

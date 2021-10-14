@@ -1,8 +1,7 @@
 package it.polito.ezqueue.entity;
 
-import java.util.ArrayList();
+import java.util.ArrayList;
 
-@Entity
 public class Office {
     private ArrayList<Desk> desks;
     private Ticket serving;

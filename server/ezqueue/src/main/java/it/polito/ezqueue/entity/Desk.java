@@ -2,7 +2,6 @@ package it.polito.ezqueue.entity;
 
 import java.util.ArrayList;
 
-@Entity
 public class Desk {
     private Integer deskId;
     private ArrayList<Service> deskServices;

@@ -1,4 +1,4 @@
-package it.polito.ezqueue.service;
+/*package it.polito.ezqueue.service;
 
 import it.polito.ezqueue.entity.Desk;
 import it.polito.ezqueue.entity.Service;
@@ -15,4 +15,4 @@ public class DeskService
     Boolean closeDesk(Integer deskId);
     Boolean isServed(String serviceId);
     Boolean addDeskService(ServiceDto service);
-}
+}*/

@@ -1,4 +1,4 @@
-package it.polito.ezqueue.service;
+/*package it.polito.ezqueue.service;
 
 import it.polito.ezqueue.entity.Office;
 
@@ -6,4 +6,4 @@ import it.polito.ezqueue.entity.Office;
 public class OfficeService
 {
 
-}
+}*/

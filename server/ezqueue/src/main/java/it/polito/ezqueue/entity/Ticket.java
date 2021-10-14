@@ -1,6 +1,5 @@
 package it.polito.ezqueue.entity;
 
-@Entity
 public class Ticket{
     private Integer number;
     private Service service;

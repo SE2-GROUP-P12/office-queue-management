@@ -1,4 +1,4 @@
-package it.polito.ezqueue.service;
+/*package it.polito.ezqueue.service;
 
 import it.polito.ezqueue.entity.Service;
 import java.util.List;
@@ -14,4 +14,4 @@ public class ServiceService
     Boolean deleteService(String serviceId);
     List<ServiceDto> getAllServices();
     Float getServiceTime(String serviceId);
-}
+}*/
