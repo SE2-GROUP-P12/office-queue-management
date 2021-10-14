@@ -18,4 +18,10 @@ public class QueueManagerController {
         this.qmService=qmService;
     }
 
+    /*TODO
+    "/API/custome_loadServices/" -> lista servizi attivi
+    '/API/customer_newNumber' -> prendi nuovo numero
+    "/API/employee_getNext/"+counterNumber -> chiama next
+    */
+
 }

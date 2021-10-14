@@ -1,12 +1,16 @@
 package it.polito.ezqueue.entity;
 
+import java.util.ArrayList;
+
 public class Service {
     private String serviceId;
     private Float serviceTime;
+    private ArrayList<Integer> serviceQueue;
 
     public Service(String serviceId, Float serviceTime) {
         this.serviceId = serviceId;
         this.serviceTime = serviceTime;
+        this.serviceQueue= new ArrayList<Integer>();
     }
 
     public String getServiceId() {
@@ -25,11 +29,18 @@ public class Service {
         this.serviceTime = serviceTime;
     }
 
-    @java.lang.Override
-    public java.lang.String toString() {
+    public boolean addTicket (Integer num)
+    {return this.serviceQueue.add(num); }
+
+    public boolean removeTicket (Integer num)
+    { return this.serviceQueue.remove(num); }
+
+    @Override
+    public String toString() {
         return "Service{" +
                 "serviceId='" + serviceId + '\'' +
                 ", serviceTime=" + serviceTime +
+                ", serviceQueue=" + serviceQueue +
                 '}';
     }
 }

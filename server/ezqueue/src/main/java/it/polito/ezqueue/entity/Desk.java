@@ -13,6 +13,11 @@ public class Desk {
         this.deskOpen=false;
     }
 
+    public Desk(Integer deskId, ArrayList<Service> deskServices) {
+        this.deskId = deskId;
+        this.deskServices = deskServices;
+    }
+
     public Integer getDeskId() {
         return deskId;
     }

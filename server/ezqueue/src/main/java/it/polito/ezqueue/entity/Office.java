@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class Office {
     private ArrayList<Desk> desks;
-    private Ticket serving;
-    private ArrayList<Ticket> queue;
+    private ArrayList<Service> services;
+    private Integer serving;
+    private Integer newNumber;
 
-    public Office(Integer nDesks) {
-        this.desks=new ArrayList<Desk>();
-        for(int i=0; i<nDesks; i++)
-            this.desks.add(new Desk(i));
-        this.serving=new Ticket();
-        this.queue= new ArrayList<Ticket>();
+    public Office(ArrayList<Desk> desks, ArrayList<Service> services) {
+        this.desks= desks;
+        this.services=services;
+        this.serving=0;
+        this.newNumber=1;
     }
 
     public ArrayList<Desk> getDesks() {
@@ -23,19 +23,27 @@ public class Office {
         this.desks = desks;
     }
 
-    public Ticket getServing() {
+    public ArrayList<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(ArrayList<Service> services) {
+        this.services = services;
+    }
+
+    public Integer getServing() {
         return serving;
     }
 
-    public void setServing(Ticket serving) {
+    public void setServing(Integer serving) {
         this.serving = serving;
     }
 
-    public ArrayList<Ticket> getQueue() {
-        return queue;
+    public Integer getNewNumber() {
+        return newNumber;
     }
 
-    public void setQueue(ArrayList<Ticket> queue) {
-        this.queue = queue;
+    public void setNewNumber(Integer newNumber) {
+        this.newNumber = newNumber;
     }
 }

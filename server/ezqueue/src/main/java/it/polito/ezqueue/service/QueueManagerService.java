@@ -1,7 +1,6 @@
 package it.polito.ezqueue.service;
 
 import it.polito.ezqueue.entity.Desk;
-import it.polito.ezqueue.entity.Ticket;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,19 +8,15 @@ import java.util.ArrayList;
 @Service
 public class QueueManagerService {
     private ArrayList<Desk> desks;
-    private Ticket serving;
-    private ArrayList<Ticket> queue;
+    private ArrayList<Service> services;
+    private Integer serving;
+    private Integer nextNumber;
 
-    public QueueManagerService(ArrayList<Desk> desks, Ticket serving, ArrayList<Ticket> queue) {
+    public QueueManagerService(ArrayList<Desk> desks, ArrayList<Service> services) {
         this.desks = desks;
-        this.serving = serving;
-        this.queue = queue;
-    }
-
-    public QueueManagerService() {
-        this.desks=new ArrayList<Desk>();
-        this.serving=new Ticket();
-        this.queue=new ArrayList<Ticket>();
+        this.services=services;
+        this.serving=0;
+        this.nextNumber=1;
     }
 
     public ArrayList<Desk> getDesks() {
@@ -32,21 +27,30 @@ public class QueueManagerService {
         this.desks = desks;
     }
 
-    public Ticket getServing() {
+    public ArrayList<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(ArrayList<Service> services) {
+        this.services = services;
+    }
+
+    public Integer getServing() {
         return serving;
     }
 
-    public void setServing(Ticket serving) {
+    public void setServing(Integer serving) {
         this.serving = serving;
     }
 
-    public ArrayList<Ticket> getQueue() {
-        return queue;
+    public Integer getNextNumber() {
+        return nextNumber;
     }
 
-    public void setQueue(ArrayList<Ticket> queue) {
-        this.queue = queue;
+    public void setNextNumber(Integer nextNumber) {
+        this.nextNumber = nextNumber;
     }
+
 
 
 }
