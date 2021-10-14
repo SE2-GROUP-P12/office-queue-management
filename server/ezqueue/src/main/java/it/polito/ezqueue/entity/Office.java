@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Office {
     private ArrayList<Desk> desks;
-    private ArrayList<Service> services;
+    private ArrayList<Serv> services;
     private Integer serving;
     private Integer newNumber;
 
-    public Office(ArrayList<Desk> desks, ArrayList<Service> services) {
+    public Office(ArrayList<Desk> desks, ArrayList<Serv> services) {
         this.desks= desks;
         this.services=services;
         this.serving=0;
@@ -23,11 +23,11 @@ public class Office {
         this.desks = desks;
     }
 
-    public ArrayList<Service> getServices() {
+    public ArrayList<Serv> getServices() {
         return services;
     }
 
-    public void setServices(ArrayList<Service> services) {
+    public void setServices(ArrayList<Serv> services) {
         this.services = services;
     }
 

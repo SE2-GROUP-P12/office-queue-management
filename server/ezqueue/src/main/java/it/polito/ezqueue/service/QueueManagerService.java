@@ -2,25 +2,38 @@ package it.polito.ezqueue.service;
 
 import it.polito.ezqueue.entity.Desk;
 import it.polito.ezqueue.entity.Serv;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
+@Getter
+@Setter
 public class QueueManagerService {
-    private ArrayList<Desk> desks;
+    private List<Desk> desks;
     private ArrayList<Serv> services;
     private Integer serving;
     private Integer nextNumber;
 
     public QueueManagerService(ArrayList<Desk> desks, ArrayList<Serv> services) {
-        this.desks = desks;
+        initDesks();
         this.services=services;
         this.serving=0;
         this.nextNumber=1;
     }
 
-    public ArrayList<Desk> getDesks() {
+    private void initDesks() {
+        //System.out.println("Ciao");
+        List<Desk> list = new LinkedList<>();
+        this.desks = list;
+    }
+
+    public List<Desk> getDesks() {
         return desks;
     }
 
