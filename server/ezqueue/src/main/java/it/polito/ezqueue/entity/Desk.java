@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 public class Desk {
     private Integer deskId;
-    private ArrayList<Service> deskServices;
+    private ArrayList<Serv> deskServices;
     private Boolean deskOpen;
 
     public Desk(Integer deskId) {
         this.deskId = deskId;
-        this.deskServices=new ArrayList<Service>();
-        this.deskOpen=false;
+        this.deskServices=new ArrayList<Serv>();
+        this.deskOpen=true;
     }
 
-    public Desk(Integer deskId, ArrayList<Service> deskServices) {
+    public Desk(Integer deskId, ArrayList<Serv> deskServices) {
         this.deskId = deskId;
         this.deskServices = deskServices;
     }
@@ -26,24 +26,24 @@ public class Desk {
         this.deskId = deskId;
     }
 
-    public ArrayList<Service> getDeskServices() {
+    public ArrayList<Serv> getDeskServices() {
         return deskServices;
     }
 
-    public void setDeskServices(ArrayList<Service> deskServices) {
+    public void setDeskServices(ArrayList<Serv> deskServices) {
         this.deskServices = deskServices;
     }
 
-    public boolean addDeskService (Service s)
+    public boolean addDeskService (Serv s)
     {
         return this.deskServices.add(s);
     }
 
     public boolean isServed (String serviceId)
     {
-        for(Service s : this.deskServices )
+        for(Serv s : this.deskServices )
         {
-            if(s.getServiceId().equals(serviceId)) return true;
+            if(s.getServId().equals(serviceId)) return true;
         }
         return false;
     }

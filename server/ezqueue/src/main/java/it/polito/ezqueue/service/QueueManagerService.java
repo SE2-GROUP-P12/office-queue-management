@@ -1,6 +1,7 @@
 package it.polito.ezqueue.service;
 
 import it.polito.ezqueue.entity.Desk;
+import it.polito.ezqueue.entity.Serv;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,11 +9,11 @@ import java.util.ArrayList;
 @Service
 public class QueueManagerService {
     private ArrayList<Desk> desks;
-    private ArrayList<Service> services;
+    private ArrayList<Serv> services;
     private Integer serving;
     private Integer nextNumber;
 
-    public QueueManagerService(ArrayList<Desk> desks, ArrayList<Service> services) {
+    public QueueManagerService(ArrayList<Desk> desks, ArrayList<Serv> services) {
         this.desks = desks;
         this.services=services;
         this.serving=0;
@@ -27,11 +28,11 @@ public class QueueManagerService {
         this.desks = desks;
     }
 
-    public ArrayList<Service> getServices() {
+    public ArrayList<Serv> getServs() {
         return services;
     }
 
-    public void setServices(ArrayList<Service> services) {
+    public void setServs(ArrayList<Serv> services) {
         this.services = services;
     }
 
@@ -51,6 +52,21 @@ public class QueueManagerService {
         this.nextNumber = nextNumber;
     }
 
-
+    public ArrayList<Serv> activeServs ()
+    {
+        ArrayList<Serv> active = new ArrayList<Serv>();
+        for(Desk d : desks)
+        {
+            if(d.getDeskOpen())
+            {
+                for(Serv s : d.getDeskServices())
+                {
+                    if(!active.contains(s))
+                        active.add(s);
+                }
+            }
+        }
+        return active;
+    }
 
 }
