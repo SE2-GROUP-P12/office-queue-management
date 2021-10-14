@@ -8,5 +8,5 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 #Intellij
-./idea/
+.idea/
 
