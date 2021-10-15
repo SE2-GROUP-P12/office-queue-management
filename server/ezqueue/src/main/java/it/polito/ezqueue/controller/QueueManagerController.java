@@ -6,7 +6,7 @@ import it.polito.ezqueue.service.QueueManagerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(Constants.HOME) //must wait for API
@@ -43,8 +43,14 @@ public class QueueManagerController {
      * @return json package to send to server
      */
     @PostMapping(Constants.TICKET_REQUEST)
-    public ResponseEntity ticketRequest(@RequestBody String serviceRequested) throws JsonProcessingException {
-        HashMap<String, String> res = qmService.getEstimatedTimeAndTicketNumber(serviceRequested);
+    public ResponseEntity ticketRequest(@RequestBody String serviceRequested){
+        Map<String, String> res;
+        try {
+            res = qmService.getEstimatedTimeAndTicketNumber(serviceRequested);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(res);
     }
 
@@ -53,8 +59,13 @@ public class QueueManagerController {
      * @return json package to send to server
      */
     @PostMapping(Constants.GET_NEXT)
-    public ResponseEntity queueUpdate(@RequestBody String data) throws JsonProcessingException {
-        return ResponseEntity.ok(qmService.getNextNumberAndUpdateQueue(data));
+    public ResponseEntity queueUpdate(@RequestBody String data) {
+        try {
+            return ResponseEntity.ok(qmService.getNextNumberAndUpdateQueue(data));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

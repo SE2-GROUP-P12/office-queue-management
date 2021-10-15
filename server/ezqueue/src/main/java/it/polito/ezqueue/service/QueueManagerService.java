@@ -17,13 +17,13 @@ import static it.polito.ezqueue.resources.Constants.*;
 @Getter
 @Setter
 public class QueueManagerService {
-    private HashMap<Integer, Desk> desks;
-    private HashMap<String, Serv> services;
+    private Map<Integer, Desk> desks;
+    private Map<String, Serv> services;
     private Integer serving;
     private Integer nextNumber;
 
 
-    public QueueManagerService(ArrayList<Desk> desks, ArrayList<Serv> services) {
+    public QueueManagerService(List<Desk> desks, List<Serv> services) {
         initServices();
         initDesks();
         this.serving = 0;
@@ -73,9 +73,9 @@ public class QueueManagerService {
      *
      * @param serviceRequested which is the json string sent from client which describes the specific service he/she asked for.
      * @return HashMap<String, String> with the two key-values item
-     * @throws JsonProcessingException
+     * @throws JsonProcessingException\
      */
-    public HashMap<String, String> getEstimatedTimeAndTicketNumber(String serviceRequested) throws JsonProcessingException {
+    public Map<String, String> getEstimatedTimeAndTicketNumber(String serviceRequested) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Map map = mapper.readValue(serviceRequested, Map.class);
         Integer clientNumber = this.getTicketNumberAndIncrease();
@@ -93,21 +93,15 @@ public class QueueManagerService {
         return res;
     }
 
-    public HashMap<Integer, Desk> getDesks() {
+    public Map<Integer, Desk> getDesks() {
         return desks;
     }
 
-    public void setDesks(HashMap<Integer, Desk> desks) {
-        this.desks = desks;
-    }
 
-    public HashMap<String, Serv> getServs() {
+    public Map<String, Serv> getServs() {
         return services;
     }
 
-    public void setServs(HashMap<String, Serv> services) {
-        this.services = services;
-    }
 
     public Integer getServing() {
         return serving;
@@ -129,7 +123,7 @@ public class QueueManagerService {
         return this.nextNumber++;
     }
 
-    public ArrayList<Serv> activeServs() {
+    public List<Serv> activeServs() {
         ArrayList<Serv> active = new ArrayList<>();
         for (Desk d : desks.values()) {
             if (d.getDeskOpen()) {
@@ -146,8 +140,7 @@ public class QueueManagerService {
 
     public double getEstimatedWaitingTime(String serviceId) {
         double tmpSum = 0.00;
-        int index = 0;
-        int servId = -1;
+
         double res;
         for (Desk desk : desks.values()) {
             for (Serv serv : desk.getDeskServices().values())
