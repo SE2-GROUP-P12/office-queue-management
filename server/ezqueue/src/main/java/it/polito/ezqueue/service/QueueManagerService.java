@@ -1,5 +1,7 @@
 package it.polito.ezqueue.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polito.ezqueue.entity.Desk;
 import it.polito.ezqueue.entity.Serv;
 import lombok.Data;
@@ -7,10 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static it.polito.ezqueue.resources.Constants.*;
 
@@ -67,6 +66,23 @@ public class QueueManagerService {
         this.desks.get(3).addDeskService(serv5);
     }
 
+    public HashMap<String, String> getEstimatedTime(String serviceRequested) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Map map = mapper.readValue(serviceRequested, Map.class);
+        Integer clientNumber = this.getTicketNumberAndIncrease();
+        double waitingTime;
+        for (Serv serv : this.activeServs())
+            if (serv.isActive() && serv.getServId().equals(map.get("serviceRequested"))) {
+                serv.addTicket(clientNumber);
+                break;
+            }
+        //Evaluate the waiting time TODO: assuming to not consider the current client
+        waitingTime = this.getEstimatedWaitingTime(map.get("serviceRequested").toString());
+        HashMap<String, String> res = new HashMap<>();
+        res.put("estimatedWaitingTime", String.valueOf(waitingTime));
+        res.put("clientNumber", String.valueOf(clientNumber));
+        return res;
+    }
     public List<Desk> getDesks() {
         return desks;
     }

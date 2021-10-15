@@ -1,16 +1,12 @@
 package it.polito.ezqueue.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polito.ezqueue.entity.Serv;
-import it.polito.ezqueue.service.QueueManagerService;
 import it.polito.ezqueue.resources.Constants;
-
+import it.polito.ezqueue.service.QueueManagerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(Constants.HOME) //must wait for API
@@ -34,22 +30,12 @@ public class QueueManagerController {
 
     @PostMapping(Constants.TICKET_REQUEST)
     public ResponseEntity ticketRequest(@RequestBody String serviceRequested) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Map map = mapper.readValue(serviceRequested, Map.class);
-        Integer clientNumber = qmService.getTicketNumberAndIncrease();
-        double waitingTime;
-        for (Serv serv : qmService.activeServs())
-            if (serv.isActive() && serv.getServId().equals(map.get("serviceRequested"))) {
-                serv.addTicket(clientNumber);
-                break;
-            }
-        //Evaluate the waiting time TODO: assuming to not consider the current client
-        waitingTime = qmService.getEstimatedWaitingTime(map.get("serviceRequested").toString());
-        HashMap<String, String> res = new HashMap<>();
-        res.put("estimatedWaitingTime", String.valueOf(waitingTime));
-        res.put("clientNumber", String.valueOf(clientNumber));
+        HashMap<String, String> res = qmService.getEstimatedTime(serviceRequested);
         return ResponseEntity.ok(res);
     }
+
+
+
 
 
 
