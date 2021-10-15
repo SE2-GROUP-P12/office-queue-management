@@ -1,19 +1,20 @@
 package it.polito.ezqueue.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Desk {
     private Integer deskId;
-    private ArrayList<Serv> deskServices;
+    private HashMap<String, Serv> deskServices;
     private Boolean deskOpen;
 
     public Desk(Integer deskId) {
         this.deskId = deskId;
-        this.deskServices=new ArrayList<Serv>();
+        this.deskServices = new HashMap<>();
         this.deskOpen=true;
     }
 
-    public Desk(Integer deskId, ArrayList<Serv> deskServices) {
+    public Desk(Integer deskId, HashMap<String, Serv> deskServices) {
         this.deskId = deskId;
         this.deskServices = deskServices;
     }
@@ -26,22 +27,22 @@ public class Desk {
         this.deskId = deskId;
     }
 
-    public ArrayList<Serv> getDeskServices() {
+    public HashMap<String, Serv> getDeskServices() {
         return deskServices;
     }
 
-    public void setDeskServices(ArrayList<Serv> deskServices) {
+    public void setDeskServices(HashMap<String, Serv> deskServices) {
         this.deskServices = deskServices;
     }
 
-    public boolean addDeskService (Serv s)
+    public void  addDeskService (Serv s)
     {
-        return this.deskServices.add(s);
+        this.deskServices.put(s.getServId(), s);
     }
 
     public boolean isServed (String serviceId)
     {
-        for(Serv s : this.deskServices )
+        for(Serv s : this.deskServices.values())
         {
             if(s.getServId().equals(serviceId)) return true;
         }

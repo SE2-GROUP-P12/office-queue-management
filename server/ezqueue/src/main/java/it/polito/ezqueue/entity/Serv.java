@@ -6,11 +6,25 @@ public class Serv {
     private String serviceId;
     private Float serviceTime;
     private ArrayList<Integer> serviceQueue;
+    private boolean active;
+
+    public ArrayList<Integer> getServiceQueue() {
+        return serviceQueue;
+    }
 
     public Serv(String serviceId, Float serviceTime) {
         this.serviceId = serviceId;
         this.serviceTime = serviceTime;
         this.serviceQueue= new ArrayList<Integer>();
+        this.active = false;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getServId() {
