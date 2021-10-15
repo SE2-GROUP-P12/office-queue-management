@@ -7,11 +7,17 @@ public class Desk {
     private Integer deskId;
     private HashMap<String, Serv> deskServices;
     private Boolean deskOpen;
+    private Integer currentTicketServed;
+
+    public void setCurrentTicketServed(Integer currentTicketServed) {
+        this.currentTicketServed = currentTicketServed;
+    }
 
     public Desk(Integer deskId) {
         this.deskId = deskId;
         this.deskServices = new HashMap<>();
         this.deskOpen=true;
+        this.currentTicketServed = -1;
     }
 
     public Desk(Integer deskId, HashMap<String, Serv> deskServices) {

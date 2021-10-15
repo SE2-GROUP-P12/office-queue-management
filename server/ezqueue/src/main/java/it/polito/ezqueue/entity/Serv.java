@@ -15,7 +15,7 @@ public class Serv {
     public Serv(String serviceId, Float serviceTime) {
         this.serviceId = serviceId;
         this.serviceTime = serviceTime;
-        this.serviceQueue= new ArrayList<Integer>();
+        this.serviceQueue = new ArrayList<Integer>();
         this.active = false;
     }
 
@@ -43,11 +43,17 @@ public class Serv {
         this.serviceTime = serviceTime;
     }
 
-    public boolean addTicket (Integer num)
-    {return this.serviceQueue.add(num); }
+    public boolean addTicket(Integer num) {
+        return this.serviceQueue.add(num);
+    }
 
-    public boolean removeTicket (Integer num)
-    { return this.serviceQueue.remove(num); }
+    public void removeTicket(Integer num) {
+        this.serviceQueue.remove(num);
+    }
+
+    public int getQueueSize() {
+        return this.serviceQueue.size();
+    }
 
     @Override
     public String toString() {
