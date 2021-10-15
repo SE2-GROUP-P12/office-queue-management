@@ -1,21 +1,22 @@
 package it.polito.ezqueue.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Serv {
     private String serviceId;
     private Float serviceTime;
-    private ArrayList<Integer> serviceQueue;
+    private List<Integer> serviceQueue;
     private boolean active;
 
-    public ArrayList<Integer> getServiceQueue() {
+    public List<Integer> getServiceQueue() {
         return serviceQueue;
     }
 
     public Serv(String serviceId, Float serviceTime) {
         this.serviceId = serviceId;
         this.serviceTime = serviceTime;
-        this.serviceQueue = new ArrayList<Integer>();
+        this.serviceQueue = new ArrayList<>();
         this.active = false;
     }
 

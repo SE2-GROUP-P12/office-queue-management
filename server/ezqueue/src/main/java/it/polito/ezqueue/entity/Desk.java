@@ -1,11 +1,15 @@
 package it.polito.ezqueue.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import lombok.Data;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
+@Data
 public class Desk {
     private Integer deskId;
-    private HashMap<String, Serv> deskServices;
+    private Map<String, Serv> deskServices;
     private Boolean deskOpen;
     private Integer currentTicketServed;
 
@@ -20,7 +24,7 @@ public class Desk {
         this.currentTicketServed = -1;
     }
 
-    public Desk(Integer deskId, HashMap<String, Serv> deskServices) {
+    public Desk(Integer deskId, Map<String, Serv> deskServices) {
         this.deskId = deskId;
         this.deskServices = deskServices;
     }
@@ -33,11 +37,11 @@ public class Desk {
         this.deskId = deskId;
     }
 
-    public HashMap<String, Serv> getDeskServices() {
+    public Map<String, Serv> getDeskServices() {
         return deskServices;
     }
 
-    public void setDeskServices(HashMap<String, Serv> deskServices) {
+    public void setDeskServices(Map<String, Serv> deskServices) {
         this.deskServices = deskServices;
     }
 
