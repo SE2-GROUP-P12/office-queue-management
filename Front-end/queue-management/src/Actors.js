@@ -62,20 +62,21 @@ function Customer() {
 function Employee() {
     const [nextNumber, setNextNumber] = useState(0);//prossimo numero da chiamare
     const [modalShow, setModalShow] = useState(false);
-    const [counterNumber, setCounterNumber] = useState(0)// numero del bancone
+    const [counterNumber, setCounterNumber] = useState(1)// numero del bancone
     const buttonHandler = () => {
-        setModalShow(true);
-        /*scheletro per la chiamata a api
-        useEffect(()=>{
-            fetch("/API/employee_getNext/"+counterNumber).then(response=>{
-                setNextNumber(response)
-            }) .catch(error => {
-                console.log(error);
-
+        setModalShow(true)
+        fetch('/API/employee_getNext', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:  '{ "deskId": '+ counterNumber + '}'})
+        .then(resp => {
+            resp.json().then(x => {
 
             })
-
-        })*/
+        }).catch(error => {console.log(error);})
     }
     return (
         <Col>
