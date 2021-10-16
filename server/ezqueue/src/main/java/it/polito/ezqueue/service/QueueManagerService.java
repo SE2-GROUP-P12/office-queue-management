@@ -216,4 +216,33 @@ public class QueueManagerService {
         return rootNode;
     }
 
+    /**
+     * This function is used to change the status of a given desk in a binary way (open->close and viceversa)
+     * @param requestBody is a string composed by the string version of the deskId which has requested the change of status
+     * @return Boolean which is the desk's new status
+     * @throws JsonProcessingException
+     */
+    public boolean toggleOpenDesk (String requestBody) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Map map = mapper.readValue(requestBody, Map.class);
+        Desk mine = this.desks.get(Integer.valueOf(map.get("deskId").toString()));
+        boolean res = !mine.getDeskOpen();
+        mine.setDeskOpen(res);
+        return res;
+    }
+
+    /**
+     * This function is used to obtain the current status of a desk, whose id is passed inside a string
+     * @param requestBody is a string composed by the string version of the deskId of which we want to know the status
+     * @return Boolean which is the desk's current status
+     * @throws JsonProcessingException
+     */
+    public boolean getOpenDesk (String requestBody) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Map map = mapper.readValue(requestBody, Map.class);
+        Desk mine = this.desks.get(Integer.valueOf(map.get("deskId").toString()));
+        boolean res = mine.getDeskOpen();
+        return res;
+    }
+
 }

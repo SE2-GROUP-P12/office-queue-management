@@ -47,7 +47,7 @@ function Customer() {
 
                 <Dropdown.Menu>
                     {serviceList.map((item) =>
-                        <Dropdown.Item onSelect={() => {setSelectedService(item.servId); console.log(item.servId)} }>{item.servId}</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => {setSelectedService(item.servId)} }>{item.servId}</Dropdown.Item>
                     )}
                 </Dropdown.Menu>
             </Dropdown>
@@ -63,6 +63,23 @@ function Employee() {
     const [nextNumber, setNextNumber] = useState(0);//prossimo numero da chiamare
     const [modalShow, setModalShow] = useState(false);
     const [counterNumber, setCounterNumber] = useState(2)// numero del bancone
+    const [open, setOpen]=useState(true);
+
+    useEffect(() => {
+        fetch("/API/employee_getOpen", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:  '{ "deskId": '+ counterNumber + '}'}).then(response => {
+            response.json().then(tmp => setOpen(tmp))
+        })
+            .catch(error => {
+                console.log(error);
+            })
+
+    }, [])
     const buttonHandler = () => {
         fetch('/API/employee_getNext', {
             method: 'POST',
@@ -76,17 +93,33 @@ function Employee() {
                 if(x.messageType.action == "no more ticket to serve")
                     setNextNumber(0);
                 else {
-                    console.log(x.data);
                     setNextNumber(x.data.TicketToServe);
                 }
                 setModalShow(true)
         })
         }).catch(error => {console.log(error);})
     }
+
+    const buttonClose = () => {
+        fetch('/API/employee_toggleOpen', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:  '{ "deskId": '+ counterNumber + '}'})
+            .then(resp => {
+                resp.json().then(x => {
+                    setOpen(x);
+                })
+            }).catch(error => {console.log(error);})
+    }
+
     return (
         <Col>
-            <h1>Employee, counter {counterNumber}</h1>
-            <Button type="button" class="vertical-center" onClick={() => buttonHandler()}>Call next customer</Button>
+            <h1>Employee, counter {counterNumber} </h1>
+            <Button type="button" class="vertical-center" onClick={() => buttonHandler()}  disabled={!open}>Call next customer</Button>
+            <Button type="button" class="vertical-center" onClick={()=> buttonClose()} variant="success">{open ? "Close counter" : "Open counter" }</Button>
             <EmployeeNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber}/>
         </Col>
     );

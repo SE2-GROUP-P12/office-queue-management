@@ -71,5 +71,31 @@ public class QueueManagerController {
             return ResponseEntity.badRequest().build();
         }
     }
+    /**
+     * Controller -> Post method (check the method documentation into QueueManagerServices for other information)
+     * @return json package to send to server
+     */
+    @PostMapping(Constants.TOGGLE_OPEN)
+    public ResponseEntity<Boolean> toggleOpen (@RequestBody String data){
+        try{
+            return ResponseEntity.ok(qmService.toggleOpenDesk(data));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    /**
+     * Controller -> Post method (check the method documentation into QueueManagerServices for other information)
+     * @return json package to send to server
+     */
+    @PostMapping(Constants.GET_OPEN)
+    public ResponseEntity<Boolean> getOpen (@RequestBody String data) {
+        try{
+            return ResponseEntity.ok(qmService.getOpenDesk(data));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
 }
