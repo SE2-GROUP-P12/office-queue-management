@@ -1,12 +1,16 @@
 package it.polito.ezqueue.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import it.polito.ezqueue.entity.Serv;
 import it.polito.ezqueue.resources.Constants;
 import it.polito.ezqueue.service.QueueManagerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(Constants.HOME) //must wait for API
@@ -24,8 +28,8 @@ public class QueueManagerController {
      * @return json package to send to server
      */
     @GetMapping(Constants.LOAD_SERVICES)
-    public ResponseEntity loadServices() {
-        return ResponseEntity.ok(qmService.getServices());
+    public ResponseEntity<List<Serv>> loadServices() {
+        return ResponseEntity.ok(new ArrayList<>(qmService.getServices().values()));
     }
 
     /**
@@ -34,7 +38,7 @@ public class QueueManagerController {
      * @return json package to send to server
      */
     @GetMapping(Constants.GET_ACTIVE_SERVICES)
-    public ResponseEntity getActiveServices() {
+    public ResponseEntity<List<Serv>> getActiveServices() {
         return ResponseEntity.ok(qmService.activeServs());
     }
 
