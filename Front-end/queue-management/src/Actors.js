@@ -18,7 +18,6 @@ function Customer() {
 
     }, [])
     const buttonHandler = () => {
-        setModalShow(true)
         let tmp = {
             "serviceRequested": selectedService
         }
@@ -31,6 +30,7 @@ function Customer() {
             body: JSON.stringify(tmp)
         }).then(resp => {
            resp.json().then(x => setNextNumber(x.clientNumber))
+            setModalShow(true)
         })
     }
     return (
@@ -62,9 +62,8 @@ function Customer() {
 function Employee() {
     const [nextNumber, setNextNumber] = useState(0);//prossimo numero da chiamare
     const [modalShow, setModalShow] = useState(false);
-    const [counterNumber, setCounterNumber] = useState(1)// numero del bancone
+    const [counterNumber, setCounterNumber] = useState(2)// numero del bancone
     const buttonHandler = () => {
-        setModalShow(true)
         fetch('/API/employee_getNext', {
             method: 'POST',
             headers: {
@@ -74,13 +73,19 @@ function Employee() {
             body:  '{ "deskId": '+ counterNumber + '}'})
         .then(resp => {
             resp.json().then(x => {
-
-            })
+                if(x.messageType.action == "no more ticket to serve")
+                    setNextNumber(0);
+                else {
+                    console.log(x.data);
+                    setNextNumber(x.data.TicketToServe);
+                }
+                setModalShow(true)
+        })
         }).catch(error => {console.log(error);})
     }
     return (
         <Col>
-            <h1>Employee</h1>
+            <h1>Employee, counter {counterNumber}</h1>
             <Button type="button" class="vertical-center" onClick={() => buttonHandler()}>Call next customer</Button>
             <EmployeeNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber}/>
         </Col>
@@ -130,8 +135,11 @@ function EmployeeNumberModal(props) {
 
             <Modal.Body>
                 <Col>
-                    <div class="centered-text">The next customer number is</div>
-                    <div class="number-container">{props.number}</div>
+                    {props.number==0 ? <div className="centered-text">No customers to serve</div> :
+                        <div>
+                        <div class="centered-text">The next customer number is</div>
+                            <div class="number-container">{props.number}</div></div>
+                    }
                 </Col>
 
             </Modal.Body></Modal>
