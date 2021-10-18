@@ -27,6 +27,8 @@ public class Desk {
     public Desk(Integer deskId, Map<String, Serv> deskServices) {
         this.deskId = deskId;
         this.deskServices = deskServices;
+        this.deskOpen=true;
+        this.currentTicketServed = -1;
     }
 
     public Integer getDeskId() {
