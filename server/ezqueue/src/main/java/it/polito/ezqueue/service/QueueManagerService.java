@@ -115,7 +115,7 @@ public class QueueManagerService {
         //Evaluate the waiting time TODO: assuming to not consider the current client
         waitingTime = this.getEstimatedWaitingTime(map.get("serviceRequested").toString());
         HashMap<String, String> res = new HashMap<>();
-        res.put("estimatedWaitingTime", String.valueOf(waitingTime));
+        res.put("estimatedWaitingTime", String.format("%.2f",waitingTime).replace(",",":"));
         res.put("clientNumber", String.valueOf(clientNumber));
         return res;
     }
@@ -174,7 +174,11 @@ public class QueueManagerService {
                 if (serv.getServId().equals(serviceId))
                     tmpSum += (double) 1 / (desk.getDeskServices().values().size());
         }
-        res = (services.get(serviceId).getServTime() * ((services.get(serviceId)).getServiceQueue().size() / tmpSum) + 0.50);
+        res = (services.get(serviceId).getServTime() * ((((services.get(serviceId)).getServiceQueue().size()-1) / tmpSum) + 0.50));
+        double seconds = res%1;
+        res = res- seconds;
+        seconds= seconds*60/100; //obtain the value of seconds
+        res+=seconds;
         return res;
     }
 
@@ -241,6 +245,35 @@ public class QueueManagerService {
         // set the served number for the desk
         this.desks.get(Integer.valueOf(map.get("deskId").toString())).setCurrentTicketServed(ticketToServe);
         return rootNode;
+    }
+
+    /**
+     * This function is used to change the status of a given desk in a binary way (open->close and viceversa)
+     * @param requestBody is a string composed by the string version of the deskId which has requested the change of status
+     * @return Boolean which is the desk's new status
+     * @throws JsonProcessingException
+     */
+    public boolean toggleOpenDesk (String requestBody) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Map map = mapper.readValue(requestBody, Map.class);
+        Desk mine = this.desks.get(Integer.valueOf(map.get("deskId").toString()));
+        boolean res = !mine.getDeskOpen();
+        mine.setDeskOpen(res);
+        return res;
+    }
+
+    /**
+     * This function is used to obtain the current status of a desk, whose id is passed inside a string
+     * @param requestBody is a string composed by the string version of the deskId of which we want to know the status
+     * @return Boolean which is the desk's current status
+     * @throws JsonProcessingException
+     */
+    public boolean getOpenDesk (String requestBody) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Map map = mapper.readValue(requestBody, Map.class);
+        Desk mine = this.desks.get(Integer.valueOf(map.get("deskId").toString()));
+        boolean res = mine.getDeskOpen();
+        return res;
     }
 
 }

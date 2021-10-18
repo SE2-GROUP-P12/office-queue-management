@@ -7,6 +7,7 @@ function Customer() {
     const [modalShow, setModalShow] = useState(false);
     const [nextNumber, setNextNumber] = useState(-1);//prossimo numero da dare
     const [selectedService, setSelectedService] = useState(-1)
+    const [estimatedTime, setEstimatedTime] = useState("");
     const [serviceList, setServiceList] = useState([])
     const [selectedServiceDescription, setSelectedServiceDescription] = useState("Select a service")
     useEffect(() => {
@@ -30,7 +31,7 @@ function Customer() {
             },
             body: JSON.stringify(tmp)
         }).then(resp => {
-            resp.json().then(x => setNextNumber(x.clientNumber))
+           resp.json().then(x => {setNextNumber(x.clientNumber); setEstimatedTime(x.estimatedWaitingTime)})
             setModalShow(true)
         })
     }
@@ -59,7 +60,7 @@ function Customer() {
             <Button type="button" class="vertical-center" disabled={selectedService === -1} onClick={() => {
                 buttonHandler()
             }}>Get your number</Button>
-            <CustomerNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber}/>
+            <CustomerNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber} time ={estimatedTime}/>
         </Col>
     );
 }
@@ -68,6 +69,23 @@ function Employee() {
     const [nextNumber, setNextNumber] = useState(0);//prossimo numero da chiamare
     const [modalShow, setModalShow] = useState(false);
     const [counterNumber, setCounterNumber] = useState(2)// numero del bancone
+    const [open, setOpen]=useState(true);
+
+    useEffect(() => {
+        fetch("/API/employee_getOpen", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:  '{ "deskId": '+ counterNumber + '}'}).then(response => {
+            response.json().then(tmp => setOpen(tmp))
+        })
+            .catch(error => {
+                console.log(error);
+            })
+
+    }, [])
     const buttonHandler = () => {
         fetch('/API/employee_getNext', {
             method: 'POST',
@@ -75,7 +93,7 @@ function Employee() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: '{ "deskId": ' + counterNumber + '}'
+/*            body: '{ "deskId": ' + counterNumber + '}'
         })
             .then(resp => {
                 resp.json().then(x => {
@@ -88,13 +106,39 @@ function Employee() {
                     setModalShow(true)
                 })
             }).catch(error => {
-            console.log(error);
+            console.log(error); */
+            body:  '{ "deskId": '+ counterNumber + '}'})
+        .then(resp => {
+            resp.json().then(x => {
+                if(x.messageType.action == "no more ticket to serve")
+                    setNextNumber(0);
+                else {
+                    setNextNumber(x.data.TicketToServe);
+                }
+                setModalShow(true)
         })
     }
+
+    const buttonClose = () => {
+        fetch('/API/employee_toggleOpen', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:  '{ "deskId": '+ counterNumber + '}'})
+            .then(resp => {
+                resp.json().then(x => {
+                    setOpen(x);
+                })
+            }).catch(error => {console.log(error);})
+    }
+
     return (
         <Col>
-            <h1>Employee, counter {counterNumber}</h1>
-            <Button type="button" class="vertical-center" onClick={() => buttonHandler()}>Call next customer</Button>
+            <h1>Employee, counter {counterNumber} </h1>
+            <Button type="button" class="vertical-center" onClick={() => buttonHandler()}  disabled={!open}>Call next customer</Button>
+            <Button type="button" class="vertical-center" onClick={()=> buttonClose()} variant="success">{open ? "Close counter" : "Open counter" }</Button>
             <EmployeeNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber}/>
         </Col>
     );
@@ -123,6 +167,8 @@ function CustomerNumberModal(props) {
                 <Col>
                     <div class="centered-text">Your number is</div>
                     <div class="number-container">{props.number}</div>
+                    <div class="centered-text">Estimated waiting time</div>
+                    <div class="number-container">{props.time}</div>
                 </Col>
 
             </Modal.Body></Modal>
