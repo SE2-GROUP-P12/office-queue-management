@@ -1,0 +1,45 @@
+---
+services:
+  - service:
+      service-id: SERVICE1
+      service-description: Paga Bonifico
+      service-time: 11
+  - service:
+      service-id: SERVICE2
+      service-description: Paga Bollettino
+      service-time: 12
+  - service:
+      service-id: SERVICE3
+      service-description: Paga Multa
+      service-time: 13
+  - service:
+      service-id: SERVICE4
+      service-description: Spedisci Pacco
+      service-time: 14
+  - service:
+      service-id: SERVICE5
+      service-description: Reso Pacco
+      service-time: 15
+desks:
+  - desk:
+      desk-id: 1
+      offered-services:
+        - SERVICE1
+        - SERVICE2
+  - desk:
+      desk-id: 2
+      offered-services:
+        - SERVICE1
+        - SERVICE3
+  - desk:
+      desk-id: 3
+      offered-services:
+        - SERVICE1
+        - SERVICE2
+  - desk:
+      desk-id: 4
+      offered-services:
+        - SERVICE1
+        - SERVICE4
+        - SERVICE5
+...
