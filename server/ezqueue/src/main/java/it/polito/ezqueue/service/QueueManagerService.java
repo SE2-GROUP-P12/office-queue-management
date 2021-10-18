@@ -90,6 +90,8 @@ public class QueueManagerService {
     }
 
     public void resetConfig() {
+        nextNumber = 1;
+        serving = 0;
         this.services.clear();
         this.desks.clear();
     }
