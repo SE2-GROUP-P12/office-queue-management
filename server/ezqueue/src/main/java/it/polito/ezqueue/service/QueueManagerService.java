@@ -88,7 +88,7 @@ public class QueueManagerService {
         //Evaluate the waiting time TODO: assuming to not consider the current client
         waitingTime = this.getEstimatedWaitingTime(map.get("serviceRequested").toString());
         HashMap<String, String> res = new HashMap<>();
-        res.put("estimatedWaitingTime", String.valueOf(waitingTime));
+        res.put("estimatedWaitingTime", String.format("%.2f",waitingTime).replace(",",":"));
         res.put("clientNumber", String.valueOf(clientNumber));
         return res;
     }
@@ -148,6 +148,10 @@ public class QueueManagerService {
                     tmpSum += (double) 1 / (desk.getDeskServices().values().size());
         }
         res = (services.get(serviceId).getServTime() * ((services.get(serviceId)).getServiceQueue().size() / tmpSum) + 0.50);
+        double seconds = res%1;
+        res = res- seconds;
+        seconds= seconds*60/100; //obtain the value of seconds
+        res+=seconds;
         return res;
     }
 
