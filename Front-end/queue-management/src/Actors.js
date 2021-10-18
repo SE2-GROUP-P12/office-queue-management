@@ -7,6 +7,7 @@ function Customer() {
     const [modalShow, setModalShow] = useState(false);
     const [nextNumber, setNextNumber] = useState(-1);//prossimo numero da dare
     const [selectedService, setSelectedService] = useState(-1)
+    const [estimatedTime, setEstimatedTime] = useState("");
     const [serviceList, setServiceList] = useState([])
     useEffect(() => {
         fetch("/API/activeServices").then(response => {
@@ -30,6 +31,7 @@ function Customer() {
             body: JSON.stringify(tmp)
         }).then(resp => {
            resp.json().then(x => setNextNumber(x.clientNumber))
+           resp.json().then(x => setEstimatedTime(x.estimatedWaitingTime))
             setModalShow(true)
         })
     }
@@ -54,7 +56,7 @@ function Customer() {
             <Button type="button" class="vertical-center" disabled={selectedService === -1} onClick={() => {
                 buttonHandler()
             }}>Get your number</Button>
-            <CustomerNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber}/>
+            <CustomerNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber} time ={estimatedTime}/>
         </Col>
     );
 }
@@ -148,6 +150,8 @@ function CustomerNumberModal(props) {
                 <Col>
                     <div class="centered-text">Your number is</div>
                     <div class="number-container">{props.number}</div>
+                    <div class="centered-text">Estimated waiting time</div>
+                    <div class="number-container">{props.time}</div>
                 </Col>
 
             </Modal.Body></Modal>
