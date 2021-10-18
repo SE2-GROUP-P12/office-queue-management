@@ -17,6 +17,9 @@ class QueueManagerControllerTest {
 
     @BeforeEach
     void setup(){
+        queueManagerController.getQmService().resetConfig();
+        queueManagerController.getQmService().initConfig("src/test/java/it/polito/ezqueue/resources/config_test.yml");
+
     }
 
     @Test

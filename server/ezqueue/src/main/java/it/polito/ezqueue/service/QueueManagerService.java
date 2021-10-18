@@ -89,6 +89,11 @@ public class QueueManagerService {
 
     }
 
+    public void resetConfig() {
+        this.services.clear();
+        this.desks.clear();
+    }
+
 
     /**
      * The following function provides the json package with estimated time and requested ticket number to the client (front-end)
@@ -275,5 +280,6 @@ public class QueueManagerService {
         boolean res = mine.getDeskOpen();
         return res;
     }
+
 
 }

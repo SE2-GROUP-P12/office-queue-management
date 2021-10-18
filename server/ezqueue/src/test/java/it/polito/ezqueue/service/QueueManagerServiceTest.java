@@ -36,6 +36,8 @@ class QueueManagerServiceTest {
      */
     @BeforeEach
     void initializationTest(){
+        queueManagerService.resetConfig();
+        queueManagerService.initConfig("src/test/java/it/polito/ezqueue/resources/config_test.yml");
         Assertions.assertFalse(queueManagerService.getDesks().isEmpty(),"Desks are empty");
         Assertions.assertFalse(queueManagerService.getServs().isEmpty(),"Servs are empty");
         Assertions.assertEquals(1,queueManagerService.getNextNumber(),"Next number is wrong after the initialization");
