@@ -31,7 +31,10 @@ function Customer() {
             },
             body: JSON.stringify(tmp)
         }).then(resp => {
-           resp.json().then(x => {setNextNumber(x.clientNumber); setEstimatedTime(x.estimatedWaitingTime)})
+            resp.json().then(x => {
+                setNextNumber(x.clientNumber);
+                setEstimatedTime(x.estimatedWaitingTime)
+            })
             setModalShow(true)
         })
     }
@@ -60,7 +63,8 @@ function Customer() {
             <Button type="button" class="vertical-center" disabled={selectedService === -1} onClick={() => {
                 buttonHandler()
             }}>Get your number</Button>
-            <CustomerNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber} time ={estimatedTime}/>
+            <CustomerNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber}
+                                 time={estimatedTime}/>
         </Col>
     );
 }
@@ -69,7 +73,7 @@ function Employee() {
     const [nextNumber, setNextNumber] = useState(0);//prossimo numero da chiamare
     const [modalShow, setModalShow] = useState(false);
     const [counterNumber, setCounterNumber] = useState(2)// numero del bancone
-    const [open, setOpen]=useState(true);
+    const [open, setOpen] = useState(true);
 
     useEffect(() => {
         fetch("/API/employee_getOpen", {
@@ -78,7 +82,8 @@ function Employee() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body:  '{ "deskId": '+ counterNumber + '}'}).then(response => {
+            body: '{ "deskId": ' + counterNumber + '}'
+        }).then(response => {
             response.json().then(tmp => setOpen(tmp))
         })
             .catch(error => {
@@ -93,30 +98,18 @@ function Employee() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-/*            body: '{ "deskId": ' + counterNumber + '}'
+            body: '{ "deskId": ' + counterNumber + '}'
         })
             .then(resp => {
                 resp.json().then(x => {
                     if (x.messageType.action == "no more ticket to serve")
                         setNextNumber(0);
                     else {
-                        console.log(x.data);
                         setNextNumber(x.data.TicketToServe);
                     }
                     setModalShow(true)
                 })
-            }).catch(error => {
-            console.log(error); */
-            body:  '{ "deskId": '+ counterNumber + '}'})
-        .then(resp => {
-            resp.json().then(x => {
-                if(x.messageType.action == "no more ticket to serve")
-                    setNextNumber(0);
-                else {
-                    setNextNumber(x.data.TicketToServe);
-                }
-                setModalShow(true)
-        })
+            })
     }
 
     const buttonClose = () => {
@@ -126,19 +119,24 @@ function Employee() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body:  '{ "deskId": '+ counterNumber + '}'})
+            body: '{ "deskId": ' + counterNumber + '}'
+        })
             .then(resp => {
                 resp.json().then(x => {
                     setOpen(x);
                 })
-            }).catch(error => {console.log(error);})
+            }).catch(error => {
+            console.log(error);
+        })
     }
 
     return (
         <Col>
             <h1>Employee, counter {counterNumber} </h1>
-            <Button type="button" class="vertical-center" onClick={() => buttonHandler()}  disabled={!open}>Call next customer</Button>
-            <Button type="button" class="vertical-center" onClick={()=> buttonClose()} variant="success">{open ? "Close counter" : "Open counter" }</Button>
+            <Button type="button" class="vertical-center" onClick={() => buttonHandler()} disabled={!open}>Call next
+                customer</Button>
+            <Button type="button" class="vertical-center" onClick={() => buttonClose()}
+                    variant="success">{open ? "Close counter" : "Open counter"}</Button>
             <EmployeeNumberModal show={modalShow} onHide={() => setModalShow(false)} number={nextNumber}/>
         </Col>
     );
