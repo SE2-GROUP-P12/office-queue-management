@@ -147,7 +147,7 @@ public class QueueManagerService {
                 if (serv.getServId().equals(serviceId))
                     tmpSum += (double) 1 / (desk.getDeskServices().values().size());
         }
-        res = (services.get(serviceId).getServTime() * (((services.get(serviceId)).getServiceQueue().size() / tmpSum) + 0.50));
+        res = (services.get(serviceId).getServTime() * ((((services.get(serviceId)).getServiceQueue().size()-1) / tmpSum) + 0.50));
         double seconds = res%1;
         res = res- seconds;
         seconds= seconds*60/100; //obtain the value of seconds
