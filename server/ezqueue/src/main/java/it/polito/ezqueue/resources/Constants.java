@@ -14,17 +14,10 @@ public interface Constants {
     static final String TICKET_REQUEST = "/requestTicket";
     static final String TOGGLE_OPEN = "/employee_toggleOpen";
     static final String GET_OPEN ="/employee_getOpen";
-    //SERVICES:
-    static final Serv serv1 = new Serv("SERVICE1", Float.parseFloat("11.00"));
-    static final Serv serv2 = new Serv("SERVICE2", Float.parseFloat("12.00"));
-    static final Serv serv3 = new Serv("SERVICE3", Float.parseFloat("13.00"));
-    static final Serv serv4 = new Serv("SERVICE4", Float.parseFloat("14.00"));
-    static final Serv serv5 = new Serv("SERVICE5", Float.parseFloat("15.00"));
-    //DESKS DESK_CONFIG  (services dependencies):
-    static final Desk desk1 = new Desk(1);
-    static final Desk desk2 = new Desk(2);
-    static final Desk desk3 = new Desk(3);
-    static final Desk desk4 = new Desk(4);
+
+    //CONFIG FILE PATH
+    static final String CFG_PATH = "server/ezqueue/src/main/java/it/polito/ezqueue/resources/config.yml";
+
     //ENVIRONMENT
     static final Integer MAX_ITEM_QUEUE = Integer.MAX_VALUE;
 }

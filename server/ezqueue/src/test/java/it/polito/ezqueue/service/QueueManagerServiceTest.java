@@ -24,9 +24,6 @@ class QueueManagerServiceTest {
     @Autowired
     private QueueManagerService queueManagerService;
 
-
-
-
     void serviceTest(){
         initializationTest();
         getEstimatedTimeAndTicketNumberTest();

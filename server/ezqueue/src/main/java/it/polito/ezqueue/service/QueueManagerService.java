@@ -1,14 +1,21 @@
 package it.polito.ezqueue.service;
 
+import com.amihaiemil.eoyaml.Yaml;
+import com.amihaiemil.eoyaml.YamlMapping;
+import com.amihaiemil.eoyaml.YamlNode;
+import com.amihaiemil.eoyaml.YamlStream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.polito.ezqueue.entity.Desk;
 import it.polito.ezqueue.entity.Serv;
+import it.polito.ezqueue.resources.Constants;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import static it.polito.ezqueue.resources.Constants.*;
@@ -24,44 +31,64 @@ public class QueueManagerService {
 
 
     public QueueManagerService(List<Desk> desks, List<Serv> services) {
-        initServices();
-        initDesks();
+        initConfig();
         this.serving = 0;
         this.nextNumber = 1;
     }
 
-    private void initServices() {
-        /*
-         * DB access, replace hardcoded data
-         */
+    public void initConfig() {
+        initConfig(Constants.CFG_PATH);
+    }
+
+    public void initConfig(String path) {
         this.services = new HashMap<>();
-        this.services.put(serv1.getServId(), serv1);
-        this.services.put(serv2.getServId(), serv2);
-        this.services.put(serv3.getServId(), serv3);
-        this.services.put(serv4.getServId(), serv4);
-        this.services.put(serv5.getServId(), serv5);
-
-    }
-
-    private void initDesks() {
-        /*
-         * DB access, replace hardcoded data
-         */
         this.desks = new HashMap<>();
-        this.desks.put(desk1.getDeskId(), desk1);
-        this.desks.put(desk2.getDeskId(), desk2);
-        this.desks.put(desk3.getDeskId(), desk3);
-        this.desks.put(desk4.getDeskId(), desk4);
-        this.desks.get(1).addDeskService(serv1);
-        this.desks.get(1).addDeskService(serv2);
-        this.desks.get(2).addDeskService(serv1);
-        this.desks.get(2).addDeskService(serv3);
-        this.desks.get(3).addDeskService(serv1);
-        this.desks.get(3).addDeskService(serv2);
-        this.desks.get(4).addDeskService(serv1);
-        this.desks.get(4).addDeskService(serv4);
-        this.desks.get(4).addDeskService(serv5);
+
+        System.out.println("Loading Configuration: ");
+
+        try {
+            YamlMapping yaml = Yaml.createYamlInput(new File(path)).readYamlMapping();
+            Iterator<YamlNode> s = yaml.yamlSequence("services").iterator();
+            while(s.hasNext()) {
+                YamlMapping yamlServ = s.next().asMapping().yamlMapping("service");
+                String serviceId = yamlServ.string("service-id");
+                String serviceDescription = yamlServ.string("service-description");
+                Float serviceTime = yamlServ.floatNumber("service-time");
+                this.services.put(serviceId, new Serv(serviceId, serviceDescription, serviceTime));
+                System.out.println("Added Service: ");
+                System.out.println("\t- service-id: " + serviceId);
+                System.out.println("\t- service-description: " + serviceDescription);
+                System.out.println("\t- service-time: " + serviceTime);
+            }
+
+            Iterator<YamlNode> d = yaml.yamlSequence("desks").iterator();
+            while(d.hasNext()) {
+                YamlMapping yamlDesk = d.next().asMapping().yamlMapping("desk");
+                Integer deskId = yamlDesk.integer("desk-id");
+
+                Map<String, Serv> servMap = new HashMap<>();
+                Iterator<YamlNode> ds = yamlDesk.yamlSequence("offered-services").iterator();
+
+                while(ds.hasNext())
+                {
+                    String servIdToAdd = ds.next().asScalar().value();
+                    Serv servToAdd = services.get(servIdToAdd);
+                    servMap.put(servIdToAdd, servToAdd);
+                }
+                this.desks.put(deskId, new Desk(deskId, servMap));
+                System.out.println("Added Desk: ");
+                System.out.println("\t- desk-id: " + deskId);
+                System.out.println("\t- offered-services: ");
+                for(String os: servMap.keySet())
+                    System.out.println("\t\t"+os);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+
 
     /**
      * The following function provides the json package with estimated time and requested ticket number to the client (front-end)

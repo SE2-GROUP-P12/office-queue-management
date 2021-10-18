@@ -9,6 +9,7 @@ function Customer() {
     const [selectedService, setSelectedService] = useState(-1)
     const [estimatedTime, setEstimatedTime] = useState("");
     const [serviceList, setServiceList] = useState([])
+    const [selectedServiceDescription, setSelectedServiceDescription] = useState("Select a service")
     useEffect(() => {
         fetch("/API/activeServices").then(response => {
             response.json().then(tmp => setServiceList(tmp))
@@ -41,14 +42,18 @@ function Customer() {
             <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
                     {
-                        selectedService === -1 ? "Select a service" : selectedService
+                        selectedServiceDescription
                     }
 
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
                     {serviceList.map((item) =>
-                        <Dropdown.Item onSelect={() => {setSelectedService(item.servId)} }>{item.servId}</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => {
+                            setSelectedService(item.servId);
+                            setSelectedServiceDescription(item.serviceDescription);
+                        }
+                        }>{item.serviceDescription}</Dropdown.Item>
                     )}
                 </Dropdown.Menu>
             </Dropdown>
@@ -88,6 +93,20 @@ function Employee() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
+/*            body: '{ "deskId": ' + counterNumber + '}'
+        })
+            .then(resp => {
+                resp.json().then(x => {
+                    if (x.messageType.action == "no more ticket to serve")
+                        setNextNumber(0);
+                    else {
+                        console.log(x.data);
+                        setNextNumber(x.data.TicketToServe);
+                    }
+                    setModalShow(true)
+                })
+            }).catch(error => {
+            console.log(error); */
             body:  '{ "deskId": '+ counterNumber + '}'})
         .then(resp => {
             resp.json().then(x => {
@@ -98,7 +117,6 @@ function Employee() {
                 }
                 setModalShow(true)
         })
-        }).catch(error => {console.log(error);})
     }
 
     const buttonClose = () => {
@@ -171,10 +189,11 @@ function EmployeeNumberModal(props) {
 
             <Modal.Body>
                 <Col>
-                    {props.number==0 ? <div className="centered-text">No customers to serve</div> :
+                    {props.number == 0 ? <div className="centered-text">No customers to serve</div> :
                         <div>
-                        <div class="centered-text">The next customer number is</div>
-                            <div class="number-container">{props.number}</div></div>
+                            <div class="centered-text">The next customer number is</div>
+                            <div class="number-container">{props.number}</div>
+                        </div>
                     }
                 </Col>
 
