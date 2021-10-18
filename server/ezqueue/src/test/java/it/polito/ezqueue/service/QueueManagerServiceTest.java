@@ -23,9 +23,6 @@ class QueueManagerServiceTest {
     @Autowired
     private QueueManagerService queueManagerService;
 
-
-
-
     void serviceTest(){
         initializationTest();
         getEstimatedTimeAndTicketNumberTest();
@@ -38,7 +35,6 @@ class QueueManagerServiceTest {
      */
     @BeforeEach
     void initializationTest(){
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         Assertions.assertFalse(queueManagerService.getDesks().isEmpty(),"Desks are empty");
         Assertions.assertFalse(queueManagerService.getServs().isEmpty(),"Servs are empty");
         Assertions.assertEquals(1,queueManagerService.getNextNumber(),"Next number is wrong after the initialization");
