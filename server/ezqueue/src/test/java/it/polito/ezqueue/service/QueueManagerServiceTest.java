@@ -36,11 +36,13 @@ class QueueManagerServiceTest {
      */
     @BeforeEach
     void initializationTest(){
+
+        System.out.println("################INIT########");
+        queueManagerService.resetConfig();
+        queueManagerService.initConfig("src/test/java/it/polito/ezqueue/resources/config_test.yml");
         Assertions.assertFalse(queueManagerService.getDesks().isEmpty(),"Desks are empty");
         Assertions.assertFalse(queueManagerService.getServs().isEmpty(),"Servs are empty");
         Assertions.assertEquals(1,queueManagerService.getNextNumber(),"Next number is wrong after the initialization");
-
-
     }
 
     @Test
@@ -86,15 +88,17 @@ class QueueManagerServiceTest {
         }
         Assertions.assertEquals(2, queueManagerService.getServs().get("SERVICE1").getQueueSize());
         try {
-            queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}");
+            System.out.println(queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}"));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         Assertions.assertEquals(1, queueManagerService.getDesks().get(2).getCurrentTicketServed());
         try {
-            queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}");
-            queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}");
-            Assertions.assertThrows(NullPointerException.class, () -> {queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}"); });
+            System.out.println(queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}"));
+            System.out.println(queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}"));
+            //TODO: fix getNextNumber
+            Assertions.assertEquals(3, queueManagerService.getDesks().get(2).getCurrentTicketServed());
+            Assertions.assertTrue(queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}").toString().contains("no more ticket to serve"));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

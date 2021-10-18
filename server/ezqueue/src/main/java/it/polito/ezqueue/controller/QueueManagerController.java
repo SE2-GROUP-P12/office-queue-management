@@ -98,4 +98,7 @@ public class QueueManagerController {
         }
     }
 
+    public QueueManagerService getQmService() {
+        return qmService;
+    }
 }
