@@ -30,8 +30,7 @@ function Customer() {
             },
             body: JSON.stringify(tmp)
         }).then(resp => {
-           resp.json().then(x => setNextNumber(x.clientNumber))
-           resp.json().then(x => setEstimatedTime(x.estimatedWaitingTime))
+           resp.json().then(x => {setNextNumber(x.clientNumber); setEstimatedTime(x.estimatedWaitingTime)})
             setModalShow(true)
         })
     }
