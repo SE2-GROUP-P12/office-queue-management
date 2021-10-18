@@ -6,7 +6,7 @@ Soft Eng 2: Office queue management system - Group P12
 Using intelliJ go in folder `it.polito.ezqueue`, right click on EzqueueApplication and Run it
 
 
-##Config File
+## Config File
 
 The Yaml config file is by default in the following path:
 
