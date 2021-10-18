@@ -1,0 +1,25 @@
+---
+services:
+  - service:
+      service-id: 1
+      service-description: Paga Bonifico
+      service-time: 12
+  - service:
+      service-id: 2
+      service-description: Paga Bollettino
+      service-time: 15
+desks:
+  - desk:
+      desk-id: 1
+      offered-services:
+        - "1"
+        - "2"
+  - desk:
+      desk-id: 2
+      offered-services:
+        - "1"
+  - desk:
+      desk-id: 3
+      offered-services:
+        - "2"
+...

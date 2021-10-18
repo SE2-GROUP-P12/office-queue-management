@@ -12,6 +12,8 @@ public interface Constants {
     static final String GET_NEXT = "/employee_getNext";
     static final String  GET_ACTIVE_SERVICES = "/activeServices";
     static final String TICKET_REQUEST = "/requestTicket";
+    //CONFIG FILE PATH
+    static final String CFG_PATH = "server/ezqueue/src/main/java/it/polito/ezqueue/resources/config.yml";
     //SERVICES:
     static final Serv serv1 = new Serv("SERVICE1", Float.parseFloat("11.00"));
     static final Serv serv2 = new Serv("SERVICE2", Float.parseFloat("12.00"));
