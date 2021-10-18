@@ -2,6 +2,7 @@ package it.polito.ezqueue.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import it.polito.ezqueue.entity.Office;
+import it.polito.ezqueue.entity.Serv;
 import org.junit.jupiter.api.Assertions;
 import it.polito.ezqueue.entity.Desk;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,6 +43,66 @@ class QueueManagerServiceTest {
         Assertions.assertFalse(queueManagerService.getServs().isEmpty(),"Servs are empty");
         Assertions.assertEquals(1,queueManagerService.getNextNumber(),"Next number is wrong after the initialization");
 
+
+    }
+
+    @Test
+    void activeServeTest(){
+        List<Serv> res;
+        System.out.println("start testing");
+        res = queueManagerService.activeServs();
+        Assertions.assertNotNull(res, "null pointer returned");
+        Assertions.assertFalse(res.isEmpty(), "empty service list returned");
+    }
+
+    @Test
+    void toggleOpenDeskTest() {
+        System.out.println("start testing");
+        Desk myDesk2 = queueManagerService.getDesks().get(2);
+        Assertions.assertTrue(myDesk2.getDeskOpen());
+        try {
+            queueManagerService.toggleOpenDesk("{\"deskId\" : \"2\"}");
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertFalse(myDesk2.getDeskOpen());
+
+        try {
+           queueManagerService.toggleOpenDesk("{\"deskId\" : \"2\"}");
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertTrue(myDesk2.getDeskOpen());
+    }
+
+    @Test
+    void getNextNumberAndUpdateQueueTest (){
+        System.out.println("start testing");
+        try {
+            queueManagerService.getEstimatedTimeAndTicketNumber("{\"serviceRequested\": \"SERVICE1\"}");
+            queueManagerService.getEstimatedTimeAndTicketNumber("{\"serviceRequested\": \"SERVICE1\"}");
+            queueManagerService.getEstimatedTimeAndTicketNumber("{\"serviceRequested\": \"SERVICE3\"}");
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(2, queueManagerService.getServs().get("SERVICE1").getQueueSize());
+        try {
+            queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}");
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(1, queueManagerService.getDesks().get(2).getCurrentTicketServed());
+        try {
+            queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}");
+            queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}");
+            Assertions.assertThrows(NullPointerException.class, () -> {queueManagerService.getNextNumberAndUpdateQueue("{\"deskId\" : \"2\"}"); });
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(3, queueManagerService.getDesks().get(2).getCurrentTicketServed());
 
     }
 

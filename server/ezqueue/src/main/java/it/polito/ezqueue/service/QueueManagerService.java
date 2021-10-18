@@ -147,7 +147,7 @@ public class QueueManagerService {
                 if (serv.getServId().equals(serviceId))
                     tmpSum += (double) 1 / (desk.getDeskServices().values().size());
         }
-        res = (services.get(serviceId).getServTime() * ((services.get(serviceId)).getServiceQueue().size() / tmpSum) + 0.50);
+        res = services.get(serviceId).getServTime() * (((services.get(serviceId)).getServiceQueue().size() / tmpSum) + 0.50);
         double seconds = res%1;
         res = res- seconds;
         seconds= seconds*60/100; //obtain the value of seconds
@@ -195,10 +195,28 @@ public class QueueManagerService {
         ObjectMapper mapper = new ObjectMapper();
         Map map = mapper.readValue(requestBody, Map.class);
         //Get the longest queue among the ones offered by the desk
-        Serv longestQueueSizeServ = this.desks.get(Integer.valueOf(map.get("deskId").toString()))
+        /*Serv longestQueueSizeServ = this.desks.get(Integer.valueOf(map.get("deskId").toString()))
                 .getDeskServices().values()
-                .stream().max(Comparator.comparing(Serv::getQueueSize)).get();
+                .stream().max(Comparator.comparing(Serv::getQueueSize)).orElse(null);*/
+        Serv longestQueueSizeServ = null;
+        int maxQueue=0;
+        int minTime = Integer.MAX_VALUE;
+        for (Serv s: this.desks.get(Integer.valueOf(map.get("deskId").toString())).getDeskServices().values()) {
+            if(s.getQueueSize()>maxQueue){
+                longestQueueSizeServ = s;
+                maxQueue = s.getQueueSize();
+            }
+            if (s.getQueueSize() == maxQueue){
+                if(longestQueueSizeServ!= null && s.getServTime() < longestQueueSizeServ.getServTime()){
+                    longestQueueSizeServ = s;
+                }
+            }
+        }
         //TODO: How can I know when a new ticket will be available to serve? -> there are a scenario to handle in the new ticket routine.
+        if (longestQueueSizeServ == null){
+            throw new NullPointerException();
+        }
+
         if (longestQueueSizeServ.getQueueSize() == 0) {
             System.out.println("At the moment all the services offered by the desk are empty.");
             typeOfMessageNode.put("action", "no more ticket to serve");
