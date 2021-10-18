@@ -47,7 +47,7 @@ function Customer() {
 
                 <Dropdown.Menu>
                     {serviceList.map((item) =>
-                        <Dropdown.Item onSelect={() => {setSelectedService(item.servId); console.log(item.servId)} }>{item.servId}</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => {setSelectedService(item.servId); console.log(item.servId)} }>{item.serviceDescription}</Dropdown.Item>
                     )}
                 </Dropdown.Menu>
             </Dropdown>

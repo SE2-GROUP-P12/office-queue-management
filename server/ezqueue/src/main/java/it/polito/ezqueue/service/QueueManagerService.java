@@ -36,15 +36,18 @@ public class QueueManagerService {
         this.nextNumber = 1;
     }
 
-    private void initConfig() {
+    public void initConfig() {
+        initConfig(Constants.CFG_PATH);
+    }
 
+    public void initConfig(String path) {
         this.services = new HashMap<>();
         this.desks = new HashMap<>();
 
         System.out.println("Loading Configuration: ");
 
         try {
-            YamlMapping yaml = Yaml.createYamlInput(new File(Constants.CFG_PATH)).readYamlMapping();
+            YamlMapping yaml = Yaml.createYamlInput(new File(path)).readYamlMapping();
             Iterator<YamlNode> s = yaml.yamlSequence("services").iterator();
             while(s.hasNext()) {
                 YamlMapping yamlServ = s.next().asMapping().yamlMapping("service");
