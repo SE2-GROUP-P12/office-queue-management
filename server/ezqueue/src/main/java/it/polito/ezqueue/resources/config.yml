@@ -2,23 +2,23 @@
 services:
   - service:
       service-id: SERVICE1
-      service-description: Paga Bonifico
+      service-description: Send Money
       service-time: 11
   - service:
       service-id: SERVICE2
-      service-description: Paga Bollettino
+      service-description: Pay Bill
       service-time: 12
   - service:
       service-id: SERVICE3
-      service-description: Paga Multa
+      service-description: Send Letter
       service-time: 13
   - service:
       service-id: SERVICE4
-      service-description: Spedisci Pacco
+      service-description: Ship Parcel
       service-time: 14
   - service:
       service-id: SERVICE5
-      service-description: Reso Pacco
+      service-description: Return Parcel
       service-time: 15
 desks:
   - desk:
